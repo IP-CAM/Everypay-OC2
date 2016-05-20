@@ -11,9 +11,11 @@ class Everypay
     private $request_cc_token;
     private $cc_token;
     private $statuses = array(
-        'completed' => self::_VERIFY_SUCCESS,
-        'cancelled' => self::_VERIFY_CANCEL,
-        'failed'    => self::_VERIFY_FAIL
+        'settled'                 => self::_VERIFY_SUCCESS,
+        'authorised'              => self::_VERIFY_SUCCESS,
+        'cancelled'               => self::_VERIFY_CANCEL,
+        'waiting_for_3ds_response'=> self::_VERIFY_CANCEL,
+        'failed'                  => self::_VERIFY_FAIL
     );
 
     /**
@@ -169,7 +171,7 @@ class Everypay
           * Refer to the Integration Manual for more information about 'nonce' uniqueness validation.
         */
 
-        $status = $this->statuses[$data['transaction_result']];
+        $status = $this->statuses[$data['payment_state']];
 
         $verify = array();
         $hmac_fields = explode(',', $data["hmac_fields"]);
