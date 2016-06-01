@@ -171,7 +171,7 @@ class Everypay
           * Refer to the Integration Manual for more information about 'nonce' uniqueness validation.
         */
 
-        $status = $this->statuses[$data['payment_state']];
+        $status = !empty($data['payment_state']) ? $this->statuses[$data['payment_state']] : false;
 
         $verify = array();
         $hmac_fields = explode(',', $data["hmac_fields"]);
